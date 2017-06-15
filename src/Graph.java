@@ -50,17 +50,18 @@ public class Graph<E> {
 
 	public boolean remove(E start, E end) {
 		Vertex<E> startVertex = vertexSet.get(start);
+		Vertex<E> endVertex = vertexSet.get(end);
 		boolean removedOK = false;
 
 		if (startVertex != null) {
 			Pair<Vertex<E>, Double> endPair = startVertex.adjList.remove(end);
 			removedOK = endPair != null;
 		}
-		/*
-		 * // Add if UNDIRECTED GRAPH: Vertex<E> endVertex = vertexSet.get(end);
-		 * if( endVertex != null ) { Pair<Vertex<E>, Double> startPair =
-		 * endVertex.adjList.remove(start); removedOK = startPair!=null ; }
-		 */
+		
+		  // Add if UNDIRECTED GRAPH: Vertex<E> endVertex = vertexSet.get(end);
+		  if( endVertex != null ) { Pair<Vertex<E>, Double> startPair =
+		   endVertex.adjList.remove(start); removedOK = startPair!=null ; }
+		 
 
 		return removedOK;
 	}

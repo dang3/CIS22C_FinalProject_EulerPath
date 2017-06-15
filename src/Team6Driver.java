@@ -9,7 +9,7 @@ public class Team6Driver {
 	public static Scanner openInputFile()
 	{
 		String filename;
-        	Scanner scanner=null;
+        Scanner scanner=null;
         
 		System.out.print("Enter the input filename: ");
 		filename = userScanner.nextLine();
@@ -42,80 +42,80 @@ public class Team6Driver {
 	    System.out.println("        7. Display the graph as an adjacency list    ");
 	    System.out.println("        8. Solve the problem for the graph           ");
 	    System.out.println("        9. Write the graph to a text file            ");
-	    System.out.println("       10. Exit program                             ");
+	    System.out.println("       10. Exit program                              ");
 	    System.out.println("=====================================================");
 	}
 	
-	public static void main(String[] args){
-		Scanner input = new Scanner(System.in);
-		int choice = 0;
-			
-		displayMenu();
-	    System.out.print("Select option(1-10): ");
-	    choice = input.nextInt();
-		while(choice < 1 || choice > 10){
-			System.out.print("Please enter an option in the range 1-10: ");
-			choice = input.nextInt();
-		}
-		    
-	    while(choice != 10){
-		    
-	    	//I think for most cases, or maybe just from (2-9), it
-	    	//Should check if a graph was previously read from an input file.
-	    	//Otherwise if nothing has been read and the user chooses options 2-9 it
-	    	//will probably cause an error
-		    switch(choice){
-		    	case 1 :
-		    		Scanner fileScanner = openInputFile();
-		    		
-		    		// check if file doesn't open and display error message
-		    		if(fileScanner == null){
-		    			System.out.println("Ending program");
-		    			return;
-		    		}
-		    		
-		    		//Read information(graph) from the input file
-		    		
-		    		fileScanner.close();
-		    		
-		    		break;
-		    	case 2 :
-		    		//Adds an edge to the graph
-		    		break;
-		    	case 3 : 
-		    		//Removes an edge from the graph
-		    		break;
-		    	case 4 :
-		    		//Reverts the previous removal(s)
-		    		break;
-		    	case 5 :
-		    		//Display the graph using the Depth-First traversal
-		    		break;
-		    	case 6 :
-		    		//Display the graph using the Breadth-First traversal
-		    		break;
-		    	case 7 :
-		    		//Display the graph as an adjacency list
-		    		break;
-		    	case 8 :
-		    		//Solves the graph problem
-		    		break;
-		    	case 9 :
-		    		//Writes the graph to a text file
-		    		break;
-		    }
-		    
-				displayMenu();
-			    System.out.print("Select option(1-10): ");
-			    choice = input.nextInt();
-			while(choice < 1 || choice > 10){
-				System.out.print("Please enter an option in the range 1-10: ");
-				choice = input.nextInt();
-			}
-	    }
-		
-		System.out.println("\nThanks for using the program.");
-            
-		
-	}
+//	public static void main(String[] args){
+//		Scanner input = new Scanner(System.in);
+//		int choice = 0;
+//			
+//		displayMenu();
+//	    System.out.print("Select option(1-10): ");
+//	    choice = input.nextInt();
+//		while(choice < 1 || choice > 10){
+//			System.out.print("Please enter an option in the range 1-10: ");
+//			choice = input.nextInt();
+//		}
+//		    
+//	    while(choice != 10){
+//		    
+//	    	//I think for most cases, or maybe just from (2-9), it
+//	    	//Should check if a graph was previously read from an input file.
+//	    	//Otherwise if nothing has been read and the user chooses options 2-9 it
+//	    	//will probably cause an error
+//		    switch(choice){
+//		    	case 1 :
+//		    		Scanner fileScanner = openInputFile();
+//		    		
+//		    		// check if file doesn't open and display error message
+//		    		if(fileScanner == null){
+//		    			System.out.println("Ending program");
+//		    			return;
+//		    		}
+//		    		
+//		    		//Read information(graph) from the input file
+//		    		
+//		    		fileScanner.close();
+//		    		
+//		    		break;
+//		    	case 2 :
+//		    		//Adds an edge to the graph
+//		    		break;
+//		    	case 3 : 
+//		    		//Removes an edge from the graph
+//		    		break;
+//		    	case 4 :
+//		    		//Reverts the previous removal(s)
+//		    		break;
+//		    	case 5 :
+//		    		//Display the graph using the Depth-First traversal
+//		    		break;
+//		    	case 6 :
+//		    		//Display the graph using the Breadth-First traversal
+//		    		break;
+//		    	case 7 :
+//		    		//Display the graph as an adjacency list
+//		    		break;
+//		    	case 8 :
+//		    		//Solves the graph problem
+//		    		break;
+//		    	case 9 :
+//		    		//Writes the graph to a text file
+//		    		break;
+//		    }
+//		    
+//				displayMenu();
+//			    System.out.print("Select option(1-10): ");
+//			    choice = input.nextInt();
+//			while(choice < 1 || choice > 10){
+//				System.out.print("Please enter an option in the range 1-10: ");
+//				choice = input.nextInt();
+//			}
+//	    }
+//		
+//		System.out.println("\nThanks for using the program.");
+//            
+//		
+//	}
 }
