@@ -40,15 +40,20 @@ public class EulerPath<E> extends Graph<E> {
 	private LinkedStack<Vertex<E>> traversalStack;
 	private LinkedStack<Vertex<E>> eulerPathStack;
 	private ArrayList<Vertex<E>> startingVertices;
+	private ArrayList<Edge<E>> edgeList;
 	private Random rand;
 
+	
+	private ArrayList<Vertex<E>> vertices = new ArrayList<>();
+	
 	public EulerPath() {
 		traversalStack = new LinkedStack<>();
 		startingVertices = new ArrayList<>();
 		eulerPathStack = new LinkedStack<>();
+		edgeList = new ArrayList<>();
 		rand = new Random();
 	}
-	
+
 	public void checkForEulerPath() {
 		// Check to see if an Euler Path exists
 		if (!hasEulerPath()) {
@@ -60,26 +65,27 @@ public class EulerPath<E> extends Graph<E> {
 			showEulerPath();
 		}
 	}
-	
-	// Check to see if an Euler path exists
-	// Needs two Iterators, one to iterate through the graphs vertexSet, another to iterate 
-	// through each vertex's adjList
+
+	// Check to see if an Euler path exists. Iterate through each vertex's adjList and count
+	// the number of edges. Look for odd number of edges
 	protected boolean hasEulerPath() {
 		int numOddVertices = 0;
-		Iterator<Vertex<E>> vertexSetItr = vertexSet.values().iterator(); 	// Iterates through vertexSet
-		Iterator<Map.Entry<E, Pair<Vertex<E>, Double>>> vertexAdjItr;		// Iterates through each vertex's adjList
+		Iterator<Vertex<E>> vertexSetItr = vertexSet.values().iterator(); // Iterate through the graph's vertexSet
+		Iterator<Map.Entry<E, Pair<Vertex<E>, Double>>> vertexAdjItr; // Iterate through each vertex's adjList
 
 		while (vertexSetItr.hasNext()) {
 			int numEdges = 0; // To count the number of edges for each vertex
-			Vertex<E> currentVertex = vertexSetItr.next(); 	// Get next vertex in vertexSet
-			vertexAdjItr = currentVertex.iterator(); 		// Get iterator for currentvertex's adjList
+			Vertex<E> currentVertex = vertexSetItr.next(); // Get next vertex in vertexSet
+			vertices.add(currentVertex);
+			vertexAdjItr = currentVertex.iterator(); // Get iterator for currentvertex's adjList
 			while (vertexAdjItr.hasNext()) {
 				numEdges++; // increase for every entry in currentVertex's adjList
 				vertexAdjItr.next();
 			}
-			if (numEdges % 2 != 0) {	// increase if number of edges for current vertex is odd
+			if (numEdges % 2 != 0) { // increase if number of edges for current vertex is odd
 				numOddVertices++;
-				startingVertices.add(currentVertex);	// Add to startingVertices list if currentVertex has an odd number of edges
+				// Add to startingVertices list if currentVertex has an odd number of edges
+				startingVertices.add(currentVertex); 
 			}
 		}
 		// Euler path for a graph exists if number of odd vertices for given graph is exactly 2
@@ -88,30 +94,42 @@ public class EulerPath<E> extends Graph<E> {
 		else
 			return false;
 	}
-	
+
 	protected void findEulerPath() {
 		// From the list of startingVertices, pick one randomly to begin
 		int startIndex = getRandIndex(startingVertices);
 		Vertex<E> currentVertex = startingVertices.get(startIndex);
-		Vertex<E> neighbor;
-		boolean done = false;	// Exit flag
-
+		Vertex<E> neighborVertex;
+		boolean done = false; // Exit flag
+	
 		do {
-			neighbor = getANeighbor(currentVertex); // Get a neighbor vertex from currentVertex
-			if (neighbor == null) {
+			neighborVertex = getANeighbor(currentVertex); // Get a neighbor vertex from currentVertex
+			if (neighborVertex == null) {	// if currentVertex doesn't have a neighbor
 				eulerPathStack.push(currentVertex);
 				currentVertex = traversalStack.pop();
-				// A complete Euler path has been found when the traversalStack is empty and if currentVertex
-				// does not have any more neighbors, this is the exit condition for the loop
-				if (traversalStack.isEmpty() && currentVertex.adjList.size() == 0) {
+				// Exit condition: if the traversalStack is empty && currentVertex does not have a un-traversed edge
+				if(traversalStack.isEmpty() && !hasANeighbor(currentVertex)) {
 					eulerPathStack.push(currentVertex);
 					done = true;
 				}
 			} else {
+				// else if currentVertex does have a neighbor
 				traversalStack.push(currentVertex);
-				currentVertex = neighbor;
+				currentVertex = neighborVertex;
 			}
 		} while (!done);
+	}
+	
+	protected boolean hasANeighbor(Vertex<E> currentVertex) {
+		int numNeighbors = currentVertex.adjList.size();
+		int neighborsUsed = 0;
+		
+		for(int i = 0; i < edgeList.size(); i++) {
+			Edge<E> currentEdge = edgeList.get(i);
+			if( currentVertex.equals(currentEdge.getFirstVertex()) || currentVertex.equals(currentEdge.getSecondVertex()) )
+				neighborsUsed++;
+		}
+		return numNeighbors != neighborsUsed;
 	}
 	
 	protected Vertex<E> getANeighbor(Vertex<E> currentVertex) {
@@ -122,25 +140,34 @@ public class EulerPath<E> extends Graph<E> {
 
 		// Iterate through currentVertex's hashMap and populate listOfNeighbors
 		while (currentVertexAdj_Itr.hasNext()) {
-			neighborsList.add(currentVertexAdj_Itr.next().first);
+			Vertex<E> cVertex = currentVertexAdj_Itr.next().first;
+			neighborsList.add(cVertex);
 		}
 
-		// If currentVertex has no neighbors
-		if (neighborsList.isEmpty())
-			return null;
-
-		// Get a random index from neighborsList
-		index = getRandIndex(neighborsList);
-		neighborVertex = neighborsList.get(index);
+		while (true) {
+			// If currentVertex's edges have all been traversed
+			if (neighborsList.isEmpty()) 
+				return null;
 		
-		// Sever the connection between currentVertex and neighborVerte to prevent traversing
-		// the same edge twice
-		currentVertex.adjList.remove(neighborVertex.data);
-		neighborVertex.adjList.remove(currentVertex.data);
-		
-		return neighborVertex;
+			// Get a random index from neighborsList
+			index = getRandIndex(neighborsList);
+			neighborVertex = neighborsList.get(index);
+			
+			// Make new edge with currentVertex and neighborVertex
+			Edge<E> newEdge = new Edge<>(currentVertex, neighborVertex);
+			
+			// If edgeList already contains newEdge, remove the neighborVertex from neighborsList in order to 
+			// prevent the same neighborVertex from being selecteed
+			if (edgeList.contains(newEdge)) {
+				neighborsList.remove(index);
+			} else {
+			// else if edgeList does not contain newEdge, add it and return neighborVertex
+				edgeList.add(newEdge);
+				return neighborVertex;
+			}
+		}
 	}
-	
+
 	public void showEulerPath() {
 		Vertex<E> currentVertex;
 		System.out.print("Euler Path Vertices: ");
@@ -156,12 +183,4 @@ public class EulerPath<E> extends Graph<E> {
 	private int getRandIndex(ArrayList<Vertex<E>> verticesList) {
 		return rand.nextInt(verticesList.size());
 	}
-
-
-
-	
-
-	
 }
-
-
