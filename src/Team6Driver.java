@@ -327,10 +327,10 @@ public class Driver {
 		return scanner;
 	}
 	
-	public void readInputFile(Graph graph) {
+	public void readInputFile(Graph<Vertex<String>> graph) {
 		Scanner inputFile = openInputFile();
 		String temp = "x";
-		Vertex city1, city2, firstCity;
+		Vertex<String> city1, city2, firstCity, firstCityTemp;
 		boolean isName = true, isFirstCity = true;
 		while(inputFile.hasNext()) {
 			temp = inputFile.nextLine();
@@ -342,16 +342,18 @@ public class Driver {
 					
 					if (isFirstCity) {
 						graph.addEdge(firstCity, city1, 0);
+						firstCityTemp = city1;
 					} else {
 						graph.addEdge(city2, city1, 0);
 					}
 					city2 = city1;
 				}
 			} else if (isName) {
-				city1 = new Vertex(temp);
+				city1 = new Vertex<>(temp);
 			} else {
-				city1.addToAdjList(new Vertex(temp), 0);
+				city1.addToAdjList(new Vertex<>(temp), 0);
 			}
 		}
+		graph.remove(firstCity, firstCityTemp);
 	}
 }
