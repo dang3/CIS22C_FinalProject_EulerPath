@@ -326,4 +326,32 @@ public class Driver {
 		} // end catch
 		return scanner;
 	}
+	
+	public void readInputFile(Graph graph) {
+		Scanner inputFile = openInputFile();
+		String temp = "x";
+		Vertex city1, city2, firstCity;
+		boolean isName = true, isFirstCity = true;
+		while(inputFile.hasNext()) {
+			temp = inputFile.nextLine();
+			if (temp == "x") {
+				if (isName) {
+					isName = false;
+				} else {
+					isName = true;
+					
+					if (isFirstCity) {
+						graph.addEdge(firstCity, city1, 0);
+					} else {
+						graph.addEdge(city2, city1, 0);
+					}
+					city2 = city1;
+				}
+			} else if (isName) {
+				city1 = new Vertex(temp);
+			} else {
+				city1.addToAdjList(new Vertex(temp), 0);
+			}
+		}
+	}
 }
