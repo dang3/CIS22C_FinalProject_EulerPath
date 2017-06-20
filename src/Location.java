@@ -29,13 +29,4 @@ public class Location {
 			return false;
 		return name.equals(((Location) anotherLocation).getName());
 	}
-
-	@Override
-	public int hashCode() {
-		int hashCode = 0;
-		
-		for (int k = 0; k < name.length(); k++)
-			hashCode = 37 * hashCode + name.charAt(k);
-		return hashCode;
-	}
 }
