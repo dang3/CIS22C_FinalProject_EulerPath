@@ -6,39 +6,20 @@ import java.util.Random;
 public class EulerPath<E> extends Graph<E> {
 
 	/*
-	 * According to Euler: If a graph has more than 2 vertices of odd degree,
-	 * there cannot be an Euler Path Conditions for Euler path: Number of odd
-	 * vertices must be two
-	 * 
-	 * 
-	 * Need something to keep track number of edges First check if graph has an
-	 * Euler path, within a method: a) Have local counter variable initially set
-	 * to 0, keeps track of number of odd vertices b) Iterate through the vertex
-	 * set in Graph.java checking the number of edges for each vertex c) If, at
-	 * the end of the method, there exists exactly 2 odd vertices, than an Euler
-	 * path exists, continue with the program d) Otherwise let the user know
-	 * that an Euler path doesn't exist, quit program
-	 *
-	 *
-	 * Need: 1) ArrayList<Pair> to keep track of traversals, prevent going back
-	 * to same edge 2) Stack<Vertex> to keep track of vertices 3) Queue<Vertex>
-	 * end result of algorithm, shows where an Euler path exists
-	 *
-	 * 
-	 * Algorithm for finding Euler path: a) Declare an empty stack and queue b)
-	 * If there are any odd vertices, start at those vertices c) If no odd
-	 * vertices, start at any vertex d) From current vertex, pick any neighbor
-	 * to go to. Remove the edge connecting the neighbor to the current vertex -
-	 * If all edges have been traversed, add current vertex to queue, pop from
-	 * stack and set as current vertex - Else add current vertex to stack, go to
-	 * any neighbor, remove edge between current vertex and selected neighbor e)
-	 * Repeat d until stack is empty f) Return the queue of vertices, the queue
-	 * shows Euler path g) Since this algorithm deleted edges, need to rebuild
-	 * graph at the end in case user wants to find another Euler path
+	 * Algorithm for finding Euler path: 
+	 a) Declare an empty stack and queue 
+	 b) Start at any odd vertex
+	 d) From current vertex, pick any neighbor to go to. Remove the edge connecting the 
+	 neighbor to the current vertex 
+	 	-If all edges have been traversed, add current vertex to queue, pop from
+	 	 stack and set as current vertex 
+		 - Else add current vertex to stack, go to any neighbor, remove edge between 
+		  current vertex and selected neighbor
+	e) Repeat d until stack is empty and currentVertex has no more neighbors
 	 */
 
 	private LinkedStack<Vertex<E>> traversalStack;
-	private LinkedStack<Vertex<E>> eulerPathStack;
+	private LinkedQueue<Vertex<E>> eulerPathQueue;
 	private ArrayList<Vertex<E>> startingVertices;
 	private ArrayList<Edge<E>> edgeList;
 	private Random rand;
@@ -49,7 +30,7 @@ public class EulerPath<E> extends Graph<E> {
 	public EulerPath() {
 		traversalStack = new LinkedStack<>();
 		startingVertices = new ArrayList<>();
-		eulerPathStack = new LinkedStack<>();
+		eulerPathQueue = new LinkedQueue<>();
 		edgeList = new ArrayList<>();
 		rand = new Random();
 	}
@@ -105,11 +86,11 @@ public class EulerPath<E> extends Graph<E> {
 		do {
 			neighborVertex = getANeighbor(currentVertex); // Get a neighbor vertex from currentVertex
 			if (neighborVertex == null) {	// if currentVertex doesn't have a neighbor
-				eulerPathStack.push(currentVertex);
+				eulerPathQueue.enqueue(currentVertex);
 				currentVertex = traversalStack.pop();
 				// Exit condition: if the traversalStack is empty && currentVertex does not have a un-traversed edge
 				if(traversalStack.isEmpty() && !hasANeighbor(currentVertex)) {
-					eulerPathStack.push(currentVertex);
+					eulerPathQueue.enqueue(currentVertex);
 					done = true;
 				}
 			} else {
@@ -171,8 +152,8 @@ public class EulerPath<E> extends Graph<E> {
 	public void showEulerPath() {
 		Vertex<E> currentVertex;
 		System.out.print("Euler Path Vertices: ");
-		while (!eulerPathStack.isEmpty()) {
-			currentVertex = eulerPathStack.pop();
+		while (!eulerPathQueue.isEmpty()) {
+			currentVertex = eulerPathQueue.enqueue();
 			System.out.print(currentVertex.getData() + " ");
 		}
 		System.out.println();
