@@ -327,33 +327,29 @@ public class Driver {
 		return scanner;
 	}
 	
-	public void readInputFile(Graph<Vertex<String>> graph) {
-		Scanner inputFile = openInputFile();
-		String temp = "x";
-		Vertex<String> city1, city2, firstCity, firstCityTemp;
-		boolean isName = true, isFirstCity = true;
-		while(inputFile.hasNext()) {
+	public static void readInputFile(Graph<String> graph) {
+			Scanner inputFile = openInputFile();
+			if (inputFile == null) {
+				System.out.println("No input, code bricked. Try again");
+				System.exit(1);
+			}
+			String temp = null;
+			String city = null, neighbor = null;
 			temp = inputFile.nextLine();
-			if (temp == "x") {
-				if (isName) {
-					isName = false;
+			city = temp;
+			boolean isName = true;
+			while (inputFile.hasNextLine()) {
+				temp = inputFile.nextLine();
+				if (temp.equals("x")) {
+					isName = !isName;
 				} else {
-					isName = true;
-					
-					if (isFirstCity) {
-						graph.addEdge(firstCity, city1, 0);
-						firstCityTemp = city1;
+					if (isName) {
+						city = temp;
 					} else {
-						graph.addEdge(city2, city1, 0);
+						neighbor = temp;
+						graph.addEdge(city, neighbor, 0);
 					}
-					city2 = city1;
 				}
-			} else if (isName) {
-				city1 = new Vertex<>(temp);
-			} else {
-				city1.addToAdjList(new Vertex<>(temp), 0);
 			}
 		}
-		graph.remove(firstCity, firstCityTemp);
-	}
 }
