@@ -132,10 +132,28 @@ public class Graph<E> {
 		}
 	} // end breadthFirstTraversalHelper
 
-	public void depthFirstTraversalHelper(Vertex<E> startVertex, Visitor<E> visitor) {
-		// YOU COMPLETE THIS (USE THE RECURSIVE ALGORITHM GIVEN FOR LESSON 11
-		// EXERCISE)
-	}
+protected void breadthFirstTraversalHelper(Vertex<E> startVertex, Visitor<E> visitor) {
+		LinkedQueue<Vertex<E>> vertexQueue = new LinkedQueue<>();
+		E startData = startVertex.getData();
+		startVertex.visit();
+		visitor.visit(startData);
+		vertexQueue.enqueue(startVertex);
+		while (!vertexQueue.isEmpty()) {
+			Vertex<E> nextVertex = vertexQueue.dequeue();
+			Iterator<Map.Entry<E, Pair<Vertex<E>, Double>>> iter = nextVertex.iterator(); // iterate
+																							// adjacency
+																							// list
+			while (iter.hasNext()) {
+				Entry<E, Pair<Vertex<E>, Double>> nextEntry = iter.next();
+				Vertex<E> neighborVertex = nextEntry.getValue().first;
+				if (!neighborVertex.isVisited()) {
+					vertexQueue.enqueue(neighborVertex);
+					neighborVertex.visit();
+					visitor.visit(neighborVertex.getData());
+				}
+			}
+		}
+	} // end breadthFirstTraversalHelper
 
 	// WRITE THE INSTANCE METHOD HERE TO
 	// WRITE THE GRAPH's vertices and its
