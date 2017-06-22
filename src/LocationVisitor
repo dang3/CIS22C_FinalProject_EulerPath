@@ -1,4 +1,4 @@
-public class LocationVisitor implements Visitor<Location> {
+public class LocationVisitor implements Visitor<String> {
 	private int lineBreakSignal = 0;
 
 	public void resetLineBreakSignal() {
@@ -6,10 +6,10 @@ public class LocationVisitor implements Visitor<Location> {
 	}
 
 	@Override
-	public void visit(Location location) {
+	public void visit(String location) {
 		if (lineBreakSignal % 5 == 0)
 			System.out.print("\n\t");
 		lineBreakSignal++;
-		System.out.print(location.getName() + " | ");
+		System.out.print(location + " | ");
 	}
 }
