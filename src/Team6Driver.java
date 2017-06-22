@@ -17,34 +17,30 @@ public class Team6Driver {
 		while (userChoice != 10) {
 			userChoice = showMenu();
 			navigateOption(userChoice);
-			System.in.read();
 		}
 	}
-
-
 
 	public static int showMenu() throws IOException {
 		int trialLimit = 3;
 		for (;;) {
 			System.out.println("\n\t-----------------------------------------------------");
-			System.out.println("\tType A Number To Go To The Option");
+			System.out.println("\tSelect from the choices below");
 			System.out.println("\t\t1. Read Input File");
 			System.out.println("\t\t2. Add Edge");
 			System.out.println("\t\t3. Remove Edge");
 			System.out.println("\t\t4. Undo Removal");
-			System.out.println("\t\t5. Display Graph");
+			System.out.println("\t\t5. Display Graph (show adjacency list)");
 			System.out.println("\t\t6. Depth First Traversal");
 			System.out.println("\t\t7. Breadth First Traversal");
-			System.out.println("\t\t8. Show adjacency list");
-			System.out.println("\t\t9. Find Euler Path");
-			System.out.println("\t\t10. Save as Text File");
-			System.out.println("\t\t11. Exit");
+			System.out.println("\t\t8. Find Euler Path");
+			System.out.println("\t\t9. Save as Text File");
+			System.out.println("\t\t10. Exit");
 			System.out.println();
 			System.out.print("\tYour Choice: ");
 			userScanner = new Scanner(System.in);
 			try {
 				int userChoice = userScanner.nextInt();
-				if (userChoice < 1 || userChoice > 11)
+				if (userChoice < 1 || userChoice > 10)
 					System.out.println("\n\tInvalid Number! Please Type Another Number.");
 				else
 					return userChoice;
@@ -62,75 +58,53 @@ public class Team6Driver {
 	}
 
 	public static void navigateOption(int option) throws IOException {
+		if(option != 1 && eulerPath == null) {
+			System.out.println("\tYou have to read input file first");
+			return;
+		}
+		
 		switch (option) {
 		case 1:
 			eulerPath = new EulerPath<>();
 			userScanner.nextLine();
 			availableLocations = readInputFile(eulerPath);
-			System.out.println("File read");
-			System.out.println("Press <Enter> to continue");
 			break;
 		case 2:
 			if (eulerPath != null) {
 				addingEdge();
 			}
-			else
-				System.out.println("\tYou have to read input file first");
 			break;
 		case 3:
 			if (eulerPath != null)
 				removingEdge();
-			else
-				System.out.println("\tYou have to read input file first");
 			break;
 		case 4:
 			if (eulerPath != null)
 				undoRemovingEdge();
-			else
-				System.out.println("\tYou have to read input file first");
 			break;
 		case 5:
 			if (eulerPath != null)
 				displayingGraph();
-			else
-				System.out.println("\tYou have to read input file first");
 			break;
 		case 6:
 			if (eulerPath != null)
 				depthFirstTraversal();
-			else
-				System.out.println("\tYou have to read input file first");
 			break;
 		case 7:
 			if (eulerPath != null)
 				breadthFirstTraversal();
-			else
-				System.out.println("\tYou have to read input file first");
 			break;
 		case 8:
 			if (eulerPath != null) {
-				eulerPath.showAdjTable();
+				eulerPath.checkForEulerPath();
 			}
-
-			else
-				System.out.println("\tYou have to read input file first");
 			break;
 		case 9:
 			if (eulerPath != null) {
-				eulerPath.checkForEulerPath();
-			}
-
-			else
-				System.out.println("\tYou have to read input file first");
-			break;
-		case 10:
-			if (eulerPath != null) {
 				saveEulerPathAsTextFile();
 			}
-			else
-				System.out.println("\tYou have to read input file first");
 			break;
-		case 11:
+		case 10:
 			System.out.println("\tThank You For Using The Program");
 			System.exit(0);
 			break;
@@ -243,7 +217,6 @@ public class Team6Driver {
 	}
 	
 	public static Scanner openInputFile() {
-		System.out.println("in");
 		String filename;
 		Scanner scanner = null;
 		System.out.print("\tEnter the input filename: ");
@@ -268,7 +241,7 @@ public class Team6Driver {
 		File file = new File(filename);
 		try {
 			eulerPath.saveAsTextFile(new PrintWriter(file));
-			System.out.println("Successfully Save The Graph As Text File In: " + filename);
+			System.out.println("\tSuccessfully Save The Graph As Text File In: " + filename);
 		} catch (IOException exception) {
 			System.out.println("\tFailed To Save The Graph As Text File");
 		}
@@ -298,6 +271,8 @@ public class Team6Driver {
 				}
 			}
 		}
+		System.out.println("\n\t****** Input file read ******");
 		return availableLocations;
 	}
+
 }
