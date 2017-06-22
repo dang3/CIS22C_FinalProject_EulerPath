@@ -174,4 +174,47 @@ protected void breadthFirstTraversalHelper(Vertex<E> startVertex, Visitor<E> vis
 	// adjacency list TO A TEXT FILE (SUGGEST TO PASS AN
 	// ALREADY OPEN PrintWriter TO THIS) !
 
+	public void saveAsTextFile(PrintWriter output) {
+		unvisitVertices();
+		Iterator<Entry<E, Pair<Vertex<E>, Double>>> iter;
+		Entry<E, Pair<Vertex<E>, Double>> entry;
+		Pair<Vertex<E>, Double> pair;
+		
+		Vertex<E> startVertex = vertexSet.get(0);
+		Visitor<E> visitor;
+		visitor = new StringVisitor();
+		LinkedQueue<Vertex<E>> vertexQueue = new LinkedQueue<>();
+		E startData = startVertex.getData();
+
+		startVertex.visit();
+		visitor.visit(startData);
+		vertexQueue.enqueue(startVertex);
+		while (!vertexQueue.isEmpty()) {
+			Vertex<E> nextVertex = vertexQueue.dequeue();
+			Iterator<Map.Entry<E, Pair<Vertex<E>, Double>>> iter2 = nextVertex.iterator(); // iterate
+																							// adjacency
+																							// list
+
+			while (iter2.hasNext()) {
+				Entry<E, Pair<Vertex<E>, Double>> nextEntry = iter2.next();
+				Vertex<E> neighborVertex = nextEntry.getValue().first;
+				output.write("Adj List for " + startData + ": ");
+				iter = neighborVertex.adjList.entrySet().iterator();
+				while (iter.hasNext()) {
+					entry = iter.next();
+					pair = entry.getValue();
+					output.write(pair.first.data + "(" + String.format("%3.1f", pair.second) + ") ");
+				}
+				output.write("\n");
+				if (!neighborVertex.isVisited()) {
+					vertexQueue.enqueue(neighborVertex);
+					neighborVertex.visit();
+					visitor.visit(neighborVertex.getData());
+				}
+			}
+		}
+		
+			
+		
+	}
 }
