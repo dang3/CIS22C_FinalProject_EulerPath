@@ -131,6 +131,20 @@ public class Graph<E> {
 			}
 		}
 	} // end breadthFirstTraversalHelper
+		public void depthFirstTraversalHelper(Vertex<E> startVertex, Visitor<E> visitor) {
+		startVertex.visit();
+		visitor.visit(startVertex.getData());
+		Iterator<Map.Entry<E, Pair<Vertex<E>, Double>>> iter = startVertex.iterator(); // iterate
+																						// adjacency
+																						// list
+		while (iter.hasNext()) {
+			Entry<E, Pair<Vertex<E>, Double>> nextEntry = iter.next();
+			Vertex<E> neighborVertex = nextEntry.getValue().first;
+			if (!neighborVertex.isVisited()) {
+				depthFirstTraversalHelper(neighborVertex, visitor);
+			}
+		}
+	}
 
 protected void breadthFirstTraversalHelper(Vertex<E> startVertex, Visitor<E> visitor) {
 		LinkedQueue<Vertex<E>> vertexQueue = new LinkedQueue<>();
