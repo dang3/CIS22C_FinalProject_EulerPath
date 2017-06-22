@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class Driver {
+public class Team6Driver {
 	private static Scanner userScanner = new Scanner(System.in);
 	private static HashMap<String, Location> availableLocations;
 	private static EulerPath<Location> eulerPath;
