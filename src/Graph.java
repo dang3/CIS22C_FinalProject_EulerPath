@@ -1,3 +1,6 @@
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -38,6 +41,7 @@ public class Graph<E> {
 
 		if (foundVertex != null) // found it, so return it
 		{
+			// System.out.println("Duplicate: " + foundVertex.data);
 			return foundVertex;
 		}
 
@@ -57,11 +61,12 @@ public class Graph<E> {
 			Pair<Vertex<E>, Double> endPair = startVertex.adjList.remove(end);
 			removedOK = endPair != null;
 		}
-		
-		  // Add if UNDIRECTED GRAPH: Vertex<E> endVertex = vertexSet.get(end);
-		  if( endVertex != null ) { Pair<Vertex<E>, Double> startPair =
-		   endVertex.adjList.remove(start); removedOK = startPair!=null ; }
-		 
+
+		// Add if UNDIRECTED GRAPH: Vertex<E> endVertex = vertexSet.get(end);
+		if (endVertex != null) {
+			Pair<Vertex<E>, Double> startPair = endVertex.adjList.remove(start);
+			removedOK = startPair != null;
+		}
 
 		return removedOK;
 	}
@@ -131,7 +136,8 @@ public class Graph<E> {
 			}
 		}
 	} // end breadthFirstTraversalHelper
-		public void depthFirstTraversalHelper(Vertex<E> startVertex, Visitor<E> visitor) {
+
+	public void depthFirstTraversalHelper(Vertex<E> startVertex, Visitor<E> visitor) {
 		startVertex.visit();
 		visitor.visit(startVertex.getData());
 		Iterator<Map.Entry<E, Pair<Vertex<E>, Double>>> iter = startVertex.iterator(); // iterate
@@ -145,76 +151,36 @@ public class Graph<E> {
 			}
 		}
 	}
+	
+	protected void saveAsTextFile(PrintWriter printWriter) throws IOException {
+		BufferedWriter bufferedWriter = new BufferedWriter(printWriter);
+		Iterator<Entry<E, Vertex<E>>> iter = vertexSet.entrySet().iterator();
+		while (iter.hasNext())
+			saveAdjacencyList(iter.next().getValue(), bufferedWriter);
+		bufferedWriter.close();
+	}
 
-protected void breadthFirstTraversalHelper(Vertex<E> startVertex, Visitor<E> visitor) {
-		LinkedQueue<Vertex<E>> vertexQueue = new LinkedQueue<>();
-		E startData = startVertex.getData();
-		startVertex.visit();
-		visitor.visit(startData);
-		vertexQueue.enqueue(startVertex);
-		while (!vertexQueue.isEmpty()) {
-			Vertex<E> nextVertex = vertexQueue.dequeue();
-			Iterator<Map.Entry<E, Pair<Vertex<E>, Double>>> iter = nextVertex.iterator(); // iterate
-																							// adjacency
-																							// list
-			while (iter.hasNext()) {
-				Entry<E, Pair<Vertex<E>, Double>> nextEntry = iter.next();
-				Vertex<E> neighborVertex = nextEntry.getValue().first;
-				if (!neighborVertex.isVisited()) {
-					vertexQueue.enqueue(neighborVertex);
-					neighborVertex.visit();
-					visitor.visit(neighborVertex.getData());
-				}
-			}
-		}
-	} // end breadthFirstTraversalHelper
-
-	// WRITE THE INSTANCE METHOD HERE TO
-	// WRITE THE GRAPH's vertices and its
-	// adjacency list TO A TEXT FILE (SUGGEST TO PASS AN
-	// ALREADY OPEN PrintWriter TO THIS) !
-
-	public void saveAsTextFile(PrintWriter output) {
-		unvisitVertices();
+	private void saveAdjacencyList(Vertex<E> startVertex, BufferedWriter bufferedWriter) {
 		Iterator<Entry<E, Pair<Vertex<E>, Double>>> iter;
 		Entry<E, Pair<Vertex<E>, Double>> entry;
 		Pair<Vertex<E>, Double> pair;
-		
-		Vertex<E> startVertex = vertexSet.get(0);
-		Visitor<E> visitor;
-		visitor = new StringVisitor();
-		LinkedQueue<Vertex<E>> vertexQueue = new LinkedQueue<>();
-		E startData = startVertex.getData();
-
-		startVertex.visit();
-		visitor.visit(startData);
-		vertexQueue.enqueue(startVertex);
-		while (!vertexQueue.isEmpty()) {
-			Vertex<E> nextVertex = vertexQueue.dequeue();
-			Iterator<Map.Entry<E, Pair<Vertex<E>, Double>>> iter2 = nextVertex.iterator(); // iterate
-																							// adjacency
-																							// list
-
-			while (iter2.hasNext()) {
-				Entry<E, Pair<Vertex<E>, Double>> nextEntry = iter2.next();
-				Vertex<E> neighborVertex = nextEntry.getValue().first;
-				output.write("Adj List for " + startData + ": ");
-				iter = neighborVertex.adjList.entrySet().iterator();
-				while (iter.hasNext()) {
-					entry = iter.next();
-					pair = entry.getValue();
-					output.write(pair.first.data + "(" + String.format("%3.1f", pair.second) + ") ");
-				}
-				output.write("\n");
-				if (!neighborVertex.isVisited()) {
-					vertexQueue.enqueue(neighborVertex);
-					neighborVertex.visit();
-					visitor.visit(neighborVertex.getData());
-				}
+		try {
+			bufferedWriter.newLine();
+			bufferedWriter.write("+ Adjacency List for \"" + startVertex.getData() + "\":");
+			bufferedWriter.newLine();
+			bufferedWriter.write("\t");
+			iter = startVertex.adjList.entrySet().iterator();
+			while (iter.hasNext()) {
+				entry = iter.next();
+				pair = entry.getValue();
+				bufferedWriter.write(pair.first.data + "");
+				if (iter.hasNext())
+					bufferedWriter.write(" -> ");
 			}
+			bufferedWriter.newLine();
+		} catch (IOException ex) {
+			System.out.println("\tFailed to save graph as text file");
 		}
-		
-			
-		
 	}
+	
 }
