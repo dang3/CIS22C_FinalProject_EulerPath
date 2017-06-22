@@ -197,4 +197,25 @@ public class EulerPath<E> extends Graph<E> {
 			--times;
 		}
 	}
+		public void saveEulerPath(PrintWriter printWriter) throws IOException {
+		if (eulerPath.getLength() > 0) {
+			final BufferedWriter bufferedWriter = new BufferedWriter(printWriter);
+			bufferedWriter.write("ONE EULER PATH IS");
+			bufferedWriter.newLine();
+			eulerPath.traversePath(new PathStrategy<Vertex<E>>() {
+				@Override
+				public void implement(Vertex<E> firstNode, Vertex<E> secondNode) {
+					try {
+						bufferedWriter.write("+ " + firstNode.getData());
+						bufferedWriter.newLine();
+					} catch (IOException ex) {
+						System.out.println("\tFailed To Save Graph As Text File");
+					}
+				}
+			});
+			bufferedWriter.write("+ " + eulerPath.getEntry(eulerPath.getLength()).getData());
+			bufferedWriter.close();
+		}
+	}
+
 }
