@@ -96,6 +96,7 @@ public class Driver {
 			eulerPath = new EulerPath<>();
 			userScanner.nextLine();
 			availableLocations = readInputFile();
+			eulerPath.checkForEulerPath();
 			break;
 		case 2:
 			if (eulerPath != null)
