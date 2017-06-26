@@ -111,7 +111,7 @@ public class Team6Driver {
 		}
 	}
 
-	public static void addingEdge() {
+	public static void addingEdge() {// Designed, written by Jae
 		System.out.println("\t-----------------------------------------------------");
 		System.out.println("\t\tAdd Edge\n");
 		userScanner.nextLine();
@@ -140,13 +140,13 @@ public class Team6Driver {
 		System.out.print("\n\tEnter Location 1: ");
 		String location1 = userScanner.nextLine();
 		if (!availableLocations.containsKey(location1)) {
-			System.out.println("\tFailed To Add Edge.\n\t\"" + location1 + "\" Is Not In The Graph.");
+			System.out.println("\tDoes not contain the entered location.\n\t\"" + location1 + "\" Is Not In The Graph.");
 			return;
 		}
 		System.out.print("\n\tEnter Location 2: ");
 		String location2 = userScanner.nextLine();
 		if (!availableLocations.containsKey(location2)) {
-			System.out.println("\tFailed To Add Edge.\n\t\"" + location2 + "\" Is Not In The Graph.");
+			System.out.println("\tDoes not contain the entered location.\n\t\"" + location2 + "\" Is Not In The Graph.");
 			return;
 		}
 		String source = availableLocations.get(location1);
@@ -186,12 +186,13 @@ public class Team6Driver {
 		eulerPath.showAdjTable();
 	}
 
-	public static void depthFirstTraversal() {
+	public static void depthFirstTraversal() { // Designed, written by Jae
 		System.out.println("\t-----------------------------------------------------");
 		System.out.println("\t\tDemonstrate Traversal\n");
 		userScanner.nextLine();
 		System.out.print("\tEnter Starting Location: ");
 		String startLocation = availableLocations.get(userScanner.nextLine());
+		System.out.println(startLocation);
 		if (startLocation != null) {
 			System.out.print("\n\t___ DEPTH FIRST TRAVERSAL ___\n");
 			eulerPath.depthFirstTraversal(startLocation, locationVisitor);
@@ -201,7 +202,7 @@ public class Team6Driver {
 		}
 	}
 
-	public static void breadthFirstTraversal() {
+	public static void breadthFirstTraversal() { // Designed, written by Jae
 		System.out.println("\t-----------------------------------------------------");
 		System.out.println("\t\tDemonstrate Traversal\n");
 		userScanner.nextLine();
@@ -231,7 +232,7 @@ public class Team6Driver {
 		} // end catch
 		return scanner;
 	}
-	public static void saveEulerPathAsTextFile() {
+	public static void saveEulerPathAsTextFile() {// Designed, written by Jae
 		System.out.println("\t-----------------------------------------------------");
 		System.out.println("\t\tSave \n");
 		userScanner.nextLine();
@@ -247,7 +248,7 @@ public class Team6Driver {
 		}
 	}
 
-	public static HashMap<String, String> readInputFile(Graph<String> graph) {
+	public static HashMap<String, String> readInputFile(Graph<String> graph){// availableLocations.put fixed by Jae 
 		Scanner inputFile = openInputFile();
 		if (inputFile == null) {
 			System.out.println("No input, code bricked. Try again");
@@ -267,7 +268,7 @@ public class Team6Driver {
 				} else {
 					neighbor = temp;
 					graph.addEdge(city, neighbor, 0);
-					availableLocations.put(city, neighbor);
+					availableLocations.put(city, city);
 				}
 			}
 		}
