@@ -1,4 +1,4 @@
-public class LocationVisitor implements Visitor<String> {
+public class LocationVisitor implements Visitor<String> {//Designed, written by Jae
 	private int lineBreakSignal = 0;
 
 	public void resetLineBreakSignal() {
