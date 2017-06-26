@@ -146,7 +146,7 @@ public class EulerPath<E> extends Graph<E> {
 		return rand.nextInt(verticesList.size());
 	}
 	
-	public boolean remove(E start, E end) {
+	public boolean remove(E start, E end)//Jae {
 		boolean removedOK = super.remove(start, end);
 		if (removedOK)
 			removedEdges.push(new Pair<E, E>(start, end));
