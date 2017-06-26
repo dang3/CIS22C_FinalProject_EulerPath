@@ -153,11 +153,11 @@ public class EulerPath<E> extends Graph<E> {
 		return removedOK;
 	}
 
-	protected void undoRemoval() {
+	protected void undoRemoval()//Jae {
 		undoRemoval(1);
 	}
 
-	protected void undoRemoval(int times) {
+	protected void undoRemoval(int times)//Jae {
 		if (removedEdges.size() == 0) {
 			System.out.println("\tThere Is Nothing To Undo");
 			return;
