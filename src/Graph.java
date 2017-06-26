@@ -97,7 +97,7 @@ public class Graph<E> {
 	}
 
 	/** Breadth-first traversal from the parameter startElement */
-	public void breadthFirstTraversal(E startElement, Visitor<E> visitor) {
+	public void breadthFirstTraversal(E startElement, Visitor<E> visitor) {//written by Jae
 		unvisitVertices();
 
 		Vertex<E> startVertex = vertexSet.get(startElement);
@@ -105,14 +105,14 @@ public class Graph<E> {
 	}
 
 	/** Depth-first traversal from the parameter startElement */
-	public void depthFirstTraversal(E startElement, Visitor<E> visitor) {
+	public void depthFirstTraversal(E startElement, Visitor<E> visitor) {// written by Jae
 		unvisitVertices();
 
 		Vertex<E> startVertex = vertexSet.get(startElement);
 		depthFirstTraversalHelper(startVertex, visitor);
 	}
 
-	protected void breadthFirstTraversalHelper(Vertex<E> startVertex, Visitor<E> visitor) {
+	protected void breadthFirstTraversalHelper(Vertex<E> startVertex, Visitor<E> visitor) {//written by Jae
 		LinkedQueue<Vertex<E>> vertexQueue = new LinkedQueue<>();
 		E startData = startVertex.getData();
 
@@ -137,7 +137,7 @@ public class Graph<E> {
 		}
 	} // end breadthFirstTraversalHelper
 
-	public void depthFirstTraversalHelper(Vertex<E> startVertex, Visitor<E> visitor) {
+	public void depthFirstTraversalHelper(Vertex<E> startVertex, Visitor<E> visitor) {//written by Jae
 		startVertex.visit();
 		visitor.visit(startVertex.getData());
 		Iterator<Map.Entry<E, Pair<Vertex<E>, Double>>> iter = startVertex.iterator(); // iterate
@@ -152,7 +152,7 @@ public class Graph<E> {
 		}
 	}
 	
-	protected void saveAsTextFile(PrintWriter printWriter) throws IOException {
+	protected void saveAsTextFile(PrintWriter printWriter) throws IOException {// Designed, written by Jae
 		BufferedWriter bufferedWriter = new BufferedWriter(printWriter);
 		Iterator<Entry<E, Vertex<E>>> iter = vertexSet.entrySet().iterator();
 		while (iter.hasNext())
