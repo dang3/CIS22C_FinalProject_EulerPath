@@ -21,7 +21,7 @@ public class EulerPath<E> extends Graph<E> {
 	}
 
 	// Check for Euler path, if it exists find it
-	public void checkForEulerPath() {
+	public void checkForEulerPath() {	// Written by Dennis Dang
 		if (!hasEulerPath()) {
 			System.out.println("An Euler Path does not exist for the current graph");
 			return;
@@ -33,7 +33,7 @@ public class EulerPath<E> extends Graph<E> {
 
 	// Check to see if an Euler path exists. Iterate through each vertex's adjList and count
 	// the number of edges. Look for odd number of edges
-	public boolean hasEulerPath() {
+	public boolean hasEulerPath() {		// Written by Dennis Dang
 		int numOddVertices = 0;
 		Iterator<Vertex<E>> vertexSetItr = vertexSet.values().iterator(); // Iterate through the graph's vertexSet
 		Iterator<Map.Entry<E, Pair<Vertex<E>, Double>>> vertexAdjItr; // Iterate through each vertex's adjList
@@ -62,7 +62,7 @@ public class EulerPath<E> extends Graph<E> {
 	// Start at any odd vertex, call it currentVertex. Get a neighbor at currentVertex. If no neighbor exists, 
 	// enqueue currentVertex, pop from the stack and call it currentVertex. Else push currentVertex and call
 	// neighborVertex currentVertex. Repeat until the stack is empty && currentVertex has no un-traversed edges
-	protected void findEulerPath() {
+	protected void findEulerPath() {	// Written by Dennis Dang
 		int startIndex = getRandIndex(startingVertices);
 		Vertex<E> currentVertex = startingVertices.get(startIndex);
 		Vertex<E> neighborVertex;
@@ -87,7 +87,7 @@ public class EulerPath<E> extends Graph<E> {
 	
 	// Check if currentVertex has any more neighbors by checking the edgeList if it contains any instances
 	// of currentVertex
-	protected boolean hasANeighbor(Vertex<E> currentVertex) {
+	protected boolean hasANeighbor(Vertex<E> currentVertex) {	// Written by Dennis Dang
 		int numNeighbors = currentVertex.adjList.size();	// number of currentVertex's available neighbors
 		int neighborsUsed = 0;	// number of currentVertex's neighbors that have been visited 
 		
@@ -100,7 +100,7 @@ public class EulerPath<E> extends Graph<E> {
 	}
 	
 	// Randomly returns a neighborVertex from currentVertex
-	protected Vertex<E> getANeighbor(Vertex<E> currentVertex) {
+	protected Vertex<E> getANeighbor(Vertex<E> currentVertex) {	// Written by Dennis Dang
 		ArrayList<Vertex<E>> neighborsList = new ArrayList<>(); // Stores currentVertex's neighbors
 		Iterator<Pair<Vertex<E>, Double>> currentVertexAdj_Itr = currentVertex.adjList.values().iterator();
 		Vertex<E> neighborVertex = null;
@@ -128,7 +128,7 @@ public class EulerPath<E> extends Graph<E> {
 		}
 	}
 
-	public void showEulerPath() {
+	public void showEulerPath() {	// Written by Dennis Dang
 		Vertex<E> currentVertex;
 		System.out.println("Euler Path Vertices:");
 		int counter = 0;
@@ -142,7 +142,7 @@ public class EulerPath<E> extends Graph<E> {
 
 	// A helper method, returns a random index from an ArrayList passed into this method
 	// Enables different Euler paths to be found for a given graph
-	private int getRandIndex(ArrayList<Vertex<E>> verticesList) {
+	private int getRandIndex(ArrayList<Vertex<E>> verticesList) {	// Written by Dennis Dang
 		return rand.nextInt(verticesList.size());
 	}
 	
