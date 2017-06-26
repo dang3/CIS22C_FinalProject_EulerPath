@@ -111,7 +111,7 @@ public class Team6Driver {
 		}
 	}
 
-	public static void addingEdge() {// Designed, written by Jae
+	public static void addingEdge() {// Designed, written by Jae, fixed by Jae (Removing edge works now)
 		System.out.println("\t-----------------------------------------------------");
 		System.out.println("\t\tAdd Edge\n");
 		userScanner.nextLine();
@@ -134,7 +134,7 @@ public class Team6Driver {
 		System.out.println("\n\tSuccessfully Added Edges Between \"" + location1 + "\" And \"" + location2 + "\"");
 	}
 
-	public static void removingEdge() {
+	public static void removingEdge() { //designed, written by Jae
 		System.out.println("\t-----------------------------------------------------");
 		System.out.println("\t\tRemove Edge\n");
 		userScanner.nextLine();
