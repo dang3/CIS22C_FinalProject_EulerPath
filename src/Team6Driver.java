@@ -12,7 +12,7 @@ public class Team6Driver {
 	private static EulerPath<String> eulerPath;
 	private static Visitor<String> locationVisitor = new LocationVisitor();
 
-	public static void main(String[] args) throws IOException {//Written by Ivan
+	public static void main(String[] args) throws IOException {
 		int userChoice = 0;
 		while (userChoice != 10) {
 			userChoice = showMenu();
@@ -20,7 +20,7 @@ public class Team6Driver {
 		}
 	}
 
-	public static int showMenu() throws IOException {//Written by Ivan
+	public static int showMenu() throws IOException {
 		int trialLimit = 3;
 		for (;;) {
 			System.out.println("\n\t-----------------------------------------------------");
@@ -57,7 +57,7 @@ public class Team6Driver {
 		}
 	}
 
-	public static void navigateOption(int option) throws IOException {//Written by Ivan
+	public static void navigateOption(int option) throws IOException {
 		if(option != 1 && eulerPath == null) {
 			System.out.println("\tYou have to read input file first");
 			return;
@@ -130,6 +130,7 @@ public class Team6Driver {
 		String source = location1;
 		String destination = location2;
 		eulerPath.addEdge(source, destination, 0);
+		availableLocations.put(destination, destination);
 		System.out.println("\n\tSuccessfully Added Edges Between \"" + location1 + "\" And \"" + location2 + "\"");
 	}
 
@@ -179,7 +180,7 @@ public class Team6Driver {
 		}
 	}
 
-	public static void displayingGraph() throws IOException {//Written by Ivan
+	public static void displayingGraph() throws IOException {
 		System.out.println("\t-----------------------------------------------------");
 		System.out.println("\t\tDisplay Graph\n");
 		System.out.println("\t____ ADJACENCY LISTS ____\n");
@@ -275,5 +276,4 @@ public class Team6Driver {
 		System.out.println("\n\t****** Input file read ******");
 		return availableLocations;
 	}
-
 }
